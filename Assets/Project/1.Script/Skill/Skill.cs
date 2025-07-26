@@ -1,8 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public abstract class Skill : ScriptableObject
+[CreateAssetMenu
+    (
+        fileName = "NewSkill",
+        menuName = "GaneData/Skills/Skill",
+        order = 1
+    )
+]
+public class Skill : ScriptableObject
 {
     [SerializeField] protected SkillData skillData;
     public SkillData SkillData { get { return skillData; }}
@@ -14,5 +20,9 @@ public abstract class Skill : ScriptableObject
     public virtual void UseSkill(SkillContext context)
     {
         context.skillData = skillData;
+        foreach (EffectEntry effect in effects)
+        {
+            effect.EntryActive(context);
+        }
     }
 }
