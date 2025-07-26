@@ -15,13 +15,24 @@ public class SkillUseController
         this.caster = caster;
         isTargeting = false;
     }
-    public void TryActivateSkillTargeting(SkillInstance skill)
+    public bool TryActivateSkillTargeting(SkillInstance skill)
     {
-        if (isTargeting) return;
-        currentSkill = skill;
-        isTargeting = true;
+        if (skill.inActive)
+        {
+            if (isTargeting) return true;
+            currentSkill = skill;
+            isTargeting = true;
 
-        currentSkill.skill.TargetType.BeginTargeting(OnTargetConfirmed);
+            currentSkill.skill.TargetType.BeginTargeting(OnTargetConfirmed);
+            return true;
+        }
+        else
+        {
+#if UNITY_EDITOR
+            Debug.Log("skill cooldown");
+#endif 
+            return false;
+        }
     }
 
     public void TargetConfirm(RaycastHit hit)

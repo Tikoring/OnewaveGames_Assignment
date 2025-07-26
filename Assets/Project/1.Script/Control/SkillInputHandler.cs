@@ -24,17 +24,10 @@ public class SkillInputHandler
 #if UNITY_EDITOR
         Debug.Log("skill hotkey");
 #endif
+        curTargetAction = context.action;
         SkillInstance skill = skillSet.GetSkillInstance(context.action);
-        if (skill.inActive)
+        if (!useController.TryActivateSkillTargeting(skill))
         {
-            useController.TryActivateSkillTargeting(skill);
-            curTargetAction = context.action;
-        }
-        else
-        {
-#if UNITY_EDITOR
-            Debug.Log("skill cooldown");
-#endif 
             curTargetAction = null;
         }
     }
