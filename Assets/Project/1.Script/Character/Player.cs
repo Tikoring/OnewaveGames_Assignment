@@ -58,9 +58,9 @@ public class Player : MonoBehaviour
         playerMap = inputActions.FindActionMap("Player");
 
         // skill
+        skillInputHandler.SkillTargetCancel(playerMap, skillTargetConfirm);
         skillInputHandler.SetSkillHotKey(skillHotKey);
         skillInputHandler.SkillTargetConfirm(skillTargetConfirm);
-        skillInputHandler.SkillTargetCancel(playerMap, skillTargetConfirm);
 
         // move mouse button
         move.performed += OnMovePerformed;
@@ -80,6 +80,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        skillSet.TickCooldown(Time.deltaTime);
+    }
     // Update is called once per frame
     void FixedUpdate()
     {

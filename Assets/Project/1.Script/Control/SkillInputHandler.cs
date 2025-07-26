@@ -24,8 +24,19 @@ public class SkillInputHandler
 #if UNITY_EDITOR
         Debug.Log("skill hotkey");
 #endif
-        useController.TryActivateSkillTargeting(skillSet.GetSkill(context.action));
-        curTargetAction = context.action;
+        SkillInstance skill = skillSet.GetSkillInstance(context.action);
+        if (skill.inActive)
+        {
+            useController.TryActivateSkillTargeting(skill);
+            curTargetAction = context.action;
+        }
+        else
+        {
+#if UNITY_EDITOR
+            Debug.Log("skill cooldown");
+#endif 
+            curTargetAction = null;
+        }
     }
 
     public void SkillTargetConfirm(InputAction action)
@@ -46,15 +57,11 @@ public class SkillInputHandler
 #endif
 
         useController.TargetConfirm(hit);
+        curTargetAction = null;
     }
 
     public void SkillTargetCancel(InputActionMap map, params InputAction[] excptActions)
     {
-        foreach (InputAction action in map.actions)
-        {
-            action.performed -= OnSkillTargetCancel;
-        }
-
         foreach (InputAction action in map.actions)
         {
             if (excptActions.Contains(action))
@@ -67,10 +74,11 @@ public class SkillInputHandler
 
     private void OnSkillTargetCancel(InputAction.CallbackContext context)
     {
-        if (curTargetAction != null && curTargetAction == context.action) { return; }
+        if (curTargetAction == null || curTargetAction == context.action) { return; }
 #if UNITY_EDITOR
         Debug.Log("skill target try cancel");
 #endif
         useController.Cancel();
+        curTargetAction = null;
     }
 }

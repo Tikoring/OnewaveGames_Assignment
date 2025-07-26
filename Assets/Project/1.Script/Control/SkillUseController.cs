@@ -4,7 +4,7 @@ public class SkillUseController
 {
     private GameObject caster;
 
-    private Skill currentSkill;
+    private SkillInstance currentSkill;
     private bool isTargeting;
 
     private SkillContext context;
@@ -15,14 +15,13 @@ public class SkillUseController
         this.caster = caster;
         isTargeting = false;
     }
-    public void TryActivateSkillTargeting(Skill skill)
+    public void TryActivateSkillTargeting(SkillInstance skill)
     {
         if (isTargeting) return;
-
         currentSkill = skill;
         isTargeting = true;
 
-        skill.TargetType.BeginTargeting(OnTargetConfirmed);
+        currentSkill.skill.TargetType.BeginTargeting(OnTargetConfirmed);
     }
 
     public void TargetConfirm(RaycastHit hit)
@@ -32,7 +31,7 @@ public class SkillUseController
         context.Clear();
         context.caster = caster;
         context.castedPosition = caster.transform.position;
-        currentSkill.TargetType.ActiveTargeting(context, hit);
+        currentSkill.skill.TargetType.ActiveTargeting(context, hit);
     }
 
     private void OnTargetConfirmed(SkillContext context)
@@ -49,7 +48,7 @@ public class SkillUseController
 #if UNITY_EDITOR
         Debug.Log("skill target real cancel");
 #endif
-            currentSkill.TargetType.CancelTargeting();
+            currentSkill.skill.TargetType.CancelTargeting();
             isTargeting = false;
             currentSkill = null;
         }

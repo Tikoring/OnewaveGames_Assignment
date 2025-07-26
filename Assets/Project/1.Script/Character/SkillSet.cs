@@ -4,26 +4,35 @@ using UnityEngine.InputSystem;
 public struct SkillHotKeyBinding
 {
     public InputAction action;
-    public Skill skill;
+    public SkillInstance skill;
 }
 
 public class SkillSet
 {
-    private Dictionary<string, Skill> hotKeyMap;
+    private Dictionary<string, SkillInstance> hotKeyMap;
 
     public void Initialize(SkillBindSet bindSet)
     {
-        hotKeyMap = new Dictionary<string, Skill>();
+        hotKeyMap = new Dictionary<string, SkillInstance>();
         foreach (var bind in bindSet.skillBinds)
         {
-            hotKeyMap[bind.hotKey.name] = bind.skill;
+            hotKeyMap[bind.hotKey.name] = new SkillInstance(bind.skill);
         }
     }
 
-    public Skill GetSkill(InputAction action)
+    public void TickCooldown(float deltaTime)
     {
-        string fullName = string.Concat(action.actionMap.name, "/", action.name);
-        hotKeyMap.TryGetValue(fullName, out Skill skill);
+        foreach (var value in hotKeyMap.Values)
+        {
+            value.TickCooldown(deltaTime);
+        }
+    }
+
+    public SkillInstance GetSkillInstance(InputAction action)
+    {
+        string fullName = $"{action.actionMap.name}/{action.name}";
+        hotKeyMap.TryGetValue(fullName, out SkillInstance skill);
+
         return skill;
     }
 }
