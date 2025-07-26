@@ -451,7 +451,7 @@ GameObject:
   - component: {fileID: 1456531965}
   - component: {fileID: 1456531964}
   - component: {fileID: 1456531963}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -570,6 +570,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdb502afb22d97f4a9f21929a43ded03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  skillBindSet: {fileID: 11400000, guid: 96a3aba5242f9bf4f89f4c1164bbd9d1, type: 2}
 --- !u!1001 &781570913245072468
 PrefabInstance:
   m_ObjectHideFlags: 0
