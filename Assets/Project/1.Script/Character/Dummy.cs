@@ -11,7 +11,7 @@ public class Dummy : MonoBehaviour
         pulling = true;
         this.pullSpeed = pullSpeed;
         
-        dest = Vector3.Lerp(transform.position, castedPosition + castDir * 1.2f, pullRatioDist);
+        dest = Vector3.Lerp(transform.position, castedPosition + castDir * 1.5f, pullRatioDist);
     }
 
     private void FixedUpdate()
